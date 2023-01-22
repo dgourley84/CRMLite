@@ -14,8 +14,15 @@ import salesRoutes from "./routes/sales.js";
 import User from "./models/User.js";
 import Product from "./models/Product.js";
 import ProductStat from "./models/ProductStat.js";
-import Transaction from './models/Transaction.js';
-import {dataUser, dataProduct,dataProductStat,dataTransaction} from "./data/index.js";
+import Transaction from "./models/Transaction.js";
+import OverallStat from "./models/OverallStat.js";
+import {
+    dataUser, 
+    dataProduct,
+    dataProductStat,
+    dataTransaction,
+    dataOverallStat,
+} from "./data/index.js";
 
 
 
@@ -37,6 +44,7 @@ app.use("/managment", managementRoutes);
 app.use("/sales", salesRoutes);
 
 
+
 // Mongoose Setup
 
 const PORT = process.env.PORT || 9000;
@@ -47,11 +55,12 @@ mongoose
     }).then(() => {
         app.listen(PORT, ()=> console.log(`Server Port: ${PORT}`))
         
-        //only Add data one time
+        /* ONLY ADD THIS DATA ONCE */
         //if this is done a second time - navigate to atlas db delete the user document and then redo.
         // User.insertMany(dataUser);
         // Product.insertMany(dataProduct);
         // ProductStat.insertMany(dataProductStat);
         // Transaction.insertMany(dataTransaction);
+        // OverallStat.insertMany(dataOverallStat);
         
     }).catch((error)=> console.log(`${error} did not connect`))
