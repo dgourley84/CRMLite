@@ -2,6 +2,7 @@ import Product from "../models/Product.js";
 import ProductStat from "../models/ProductStat.js";
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
+import getCountryIso3 from "country-iso-2-to-3";
 
 //this could be done with graphQL
   export const getProducts = async (req, res) => {
@@ -73,3 +74,28 @@ import Transaction from "../models/Transaction.js";
     }
   };
   
+
+  export const getGeography = async (req, res) => {
+    try {
+      const users = await User.find();
+      //for all users get the country value and then turn to ISO3, if it doesnt exsit then set value to 0.
+      const mappedLocations = users.reduce((acc, { country }) => {
+        const countryISO3 = getCountryIso3(country);
+        if (!acc[countryISO3]) {
+          acc[countryISO3] = 0;
+        }
+        acc[countryISO3]++;
+        return acc;
+      }, {});
+      //format the locations to map through entries in order to push into nivo charts
+      const formattedLocations = Object.entries(mappedLocations).map(
+        ([country, count]) => {
+          return { id: country, value: count };
+        }
+      );
+  
+      res.status(200).json(formattedLocations);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  };
