@@ -9,7 +9,10 @@ import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
-;
+
+//data imports
+import User from "./models/User.js";
+import {dataUser} from "./data/index.js";
 
 
 // Configuration
@@ -39,4 +42,8 @@ mongoose
         useUnifiedTopology: true,
     }).then(() => {
         app.listen(PORT, ()=> console.log(`Server Port: ${PORT}`))
+        
+        //only Add data one time
+        //if this is done a second time - navigate to atlas db delete the user document and then redo.
+        // User.insertMany(dataUser);
     }).catch((error)=> console.log(`${error} did not connect`))
