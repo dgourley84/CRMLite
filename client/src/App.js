@@ -16,8 +16,9 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown"
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
-
-
+import Cards from "scenes/cards";
+import Login from "scenes/login";
+import Register from "scenes/register"
 
 
 function App() {
@@ -30,7 +31,9 @@ function App() {
           <CssBaseline/>
           <Routes>
             <Route element = {<Layout />}>
-              <Route path="/" element={<Navigate to ="/dashboard" replace/>}/>
+              <Route exact path="/register" element={<Register />} />
+              <Route exact path="/login" element={<Login />} />
+              <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/products" element={<Products/>}/>
               <Route path="/customers" element={<Customers />} />

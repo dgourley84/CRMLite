@@ -1,14 +1,17 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import passport from 'passport';
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
+import loginRoutes from "./routes/login.js"
 
 //data imports
 import User from "./models/User.js";
@@ -28,7 +31,7 @@ import {
 
 
 
-// Configuration
+// Configuration and middlewares
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -38,6 +41,7 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
+app.use(cookieParser());
 
 //Routes
 app.use("/client", clientRoutes);
@@ -45,10 +49,15 @@ app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 
+//JWT Login
+app.get('/', (req,res)=>{
+    res.status(201).json("home GET Request");
+});
+app.use(express.json());
+app.use("/home", loginRoutes);
 
 
 // Mongoose Setup
-
 const PORT = process.env.PORT || 9000;
 mongoose
     .connect(process.env.MONGO_URL,{

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -10,13 +11,13 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is Required"],
       max: 50,
       unique: true,
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password is Required"],
       min: 5,
     },
     city: String,
@@ -33,6 +34,24 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// UserSchema.pre("save", async function (next) {
+//   const salt = await bcrypt.genSalt();
+//   this.password = await bcrypt.hash(this.password, salt);
+//   next();
+// });
+
+// UserSchema.statics.login = async function (email, password) {
+//   const user = await this.findOne({ email });
+//   if (user) {
+//     const auth = await bcrypt.compare(password, user.password);
+//     if (auth) {
+//       return user;
+//     }
+//     throw Error("incorrect password");
+//   }
+//   throw Error("incorrect email");
+// };
 
 const User = mongoose.model("User", UserSchema);
 export default User;
