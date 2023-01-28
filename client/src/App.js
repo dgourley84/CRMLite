@@ -16,13 +16,12 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown"
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
-import Cards from "scenes/cards";
 import Login from "scenes/login";
 import Register from "scenes/register"
 import UpdateUser from "scenes/profile";
 
 //auth middleware
-import { AuthorizeUser } from "middleware/auth";
+// import { AuthorizeUser } from "middleware/auth";
 
 
 function App() {

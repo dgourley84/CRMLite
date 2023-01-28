@@ -113,6 +113,7 @@ const Navbar = ({
                             />
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"center"}}>
+                        <MenuItem onClick={() => {userUpdate();handleClose();}}>Add user</MenuItem>
                             <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
                             <MenuItem onClick={handleClose}>Add product</MenuItem>
                             <MenuItem onClick={handleClose}>New transaction</MenuItem>
