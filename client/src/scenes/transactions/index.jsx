@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
+import { useNavigate } from "react-router-dom";
 
 
 const Transactions = () => {
     const theme = useTheme();
+
+    const navigate = useNavigate()
+
+    const handleUpdateTransaction = (id) => {
+      // navigate to the update page for the transaction with the given id
+      navigate(`/transactions/update/${id}`)
+    }
+
+    const handleDeleteTransaction = (id) => {
+      // navigate to the delete page for the transaction with the given id
+      navigate(`/transactions/delete/${id}`)
+    }
   
     // values to be sent to the backend
     const [page, setPage] = useState(0);
@@ -39,6 +52,7 @@ const Transactions = () => {
         field: "createdAt",
         headerName: "CreatedAt",
         flex: 1,
+        renderCell: (params) => new Date(params.value).toLocaleString()
       },
       {
         field: "products",
@@ -50,10 +64,47 @@ const Transactions = () => {
       {
         field: "cost",
         headerName: "Cost",
-        flex: 1,
+        flex: 0.8,
         renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
       },
+      {
+        field: "update",
+        headerName:"Update",
+        flex: 0.5,
+        renderCell: (row) => {
+          return (
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              onClick={() => handleUpdateTransaction(row._id)}
+            >
+              Update
+            </Button>
+            )
+        },
+        disableClick: true 
+      },
+      {
+        field: "delete",
+        headerName:"Delete",
+        flex: 0.5,
+        renderCell: (row) => {
+          return (
+            <Button
+              variant="contained"
+              size="small"
+              color="secondary"
+              onClick={() => handleDeleteTransaction(row._id)}
+            >
+              Delete
+            </Button>
+            )
+        },
+        disableClick: true 
+      }
     ];
+
   
     return (
       <Box m="1.5rem 2.5rem">
