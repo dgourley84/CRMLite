@@ -11,7 +11,6 @@ import {
   Input,
   FormHelperText,
 } from "@mui/material";
-import Header from "components/Header";
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { profileValidation } from 'helpers/validate';
@@ -19,62 +18,10 @@ import convertToBase64 from 'helpers/convert';
 import useFetch from 'hooks/fetch.hook';
 import { updateUser } from 'helpers/helper';
 import { useNavigate } from 'react-router-dom';
-import profileImg from '../../assets/profile.jpg';
-import styles from '../../assets/Profile.module.css';
-import extend from '../../assets/Username.module.css'
 import { useAuthStore } from 'store/store';
 
-export default function Profile() {
 
-  const [file, setFile] = useState();
-  const navigate = useNavigate()
-  const {email} =useAuthStore(state=> state.auth)
-  const [{ isLoading, apiData, serverError }] = useFetch();
- 
-  const formikProfile = useFormik({
-    initialValues : {
-      name : apiData?.name || '',
-      email: apiData?.email || '',
-      city: apiData?.city || '',
-      state : apiData?.state || '',
-      country : apiData?.country || '',
-      occupation : apiData?.occupation || '',
-      phoneNumber : apiData?.phoneNumber || '',
-    },
-    enableReinitialize: true,
-    validate : profileValidation,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit : async values => {
-      values = await Object.assign(values, { profile : file || apiData?.profile || ''})
-      let updatePromise = updateUser(values);
-
-      toast.promise(updatePromise, {
-        loading: 'Updating...',
-        success : <b>Update Successfully...!</b>,
-        error: <b>Could not Update!</b>
-      });
-
-    }
-  })
-
-  /** formik doensn't support file upload so we need to create this handler */
-  const onUpload = async e => {
-    const base64 = await convertToBase64(e.target.files[0]);
-    setFile(base64);
-  }
-
-  const theme = useTheme();
-
-  // logout handler function
-  function userLogout(){
-    localStorage.removeItem('token');
-    navigate('/')
-  }
-
-  if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
-  if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
-
+const updateProduct = () => {
   return (
     <Container component="main" maxWidth="md">   
       <Box
@@ -130,3 +77,5 @@ export default function Profile() {
     </Container>
   )
 }
+
+export default updateProduct
