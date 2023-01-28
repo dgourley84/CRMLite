@@ -61,7 +61,7 @@ export async function register (req, res) {
                         //return save result as a reposone
                         user.save()
                             .then(result=> res.status(201).send({msg:"User Registeration Successful"}))
-                            .catch(error=> res.statu(500).send({msg:"this is where it is failing"}))
+                            .catch(error=> res.status(500).send({msg:"this is where it is failing"}))
                     }). catch(error => {
                         return res.status(500).send({
                             error: "Enable to hashed password"

@@ -5,7 +5,7 @@ axios.defaults.baseURL= process.env.REACT_APP_BASE_URL;
 
 
 /**Autheticate function */
-export async function autheticate(email){
+export async function authenticate(email){
     try {
         return await axios.post("/home/authenticate",{email})
     } catch (error) {

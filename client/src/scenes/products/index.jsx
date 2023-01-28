@@ -55,7 +55,16 @@ const Product = ({
             </CardContent>
             <CardActions>
                 <Button 
-                variant="primary"
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={()=> setIsExpanded(!isExpanded)}
+                >
+                    Update Product
+                </Button>
+                <Button 
+                variant="contained"
+                color="secondary"
                 size="small"
                 onClick={()=> setIsExpanded(!isExpanded)}
                 >

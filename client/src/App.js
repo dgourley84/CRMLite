@@ -19,6 +19,10 @@ import Performance from "scenes/performance";
 import Cards from "scenes/cards";
 import Login from "scenes/login";
 import Register from "scenes/register"
+import UpdateUser from "scenes/profile";
+
+//auth middleware
+import { AuthorizeUser } from "middleware/auth";
 
 
 function App() {
@@ -34,6 +38,7 @@ function App() {
               <Route exact path="/register" element={<Register />} />
               <Route exact path="/login" element={<Login />} />
               <Route path="/" element={<Navigate replace to="/login" />} />
+              <Route path="/profile" element={<UpdateUser/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/products" element={<Products/>}/>
               <Route path="/customers" element={<Customers />} />

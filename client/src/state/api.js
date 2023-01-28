@@ -56,10 +56,6 @@ export const api = createApi({
       query: () => "general/dashboard",
       providesTags: ["Dashboard"],
     }),
-    getLogin: build.query({
-      query: () => "login",
-      providesTags: ["Login"],
-    }),
   }),
 });
 

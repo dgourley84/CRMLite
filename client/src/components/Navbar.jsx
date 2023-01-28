@@ -11,6 +11,7 @@ import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
 import { setMode } from "state";
 import profileImage from "../assets/profile.jpg";
+import { useNavigate } from 'react-router-dom';
 import {
     AppBar,
     Button,
@@ -36,6 +37,18 @@ const Navbar = ({
     const isOpen = Boolean(anchorEl);
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
+    const navigate = useNavigate()
+
+    // logout handler function
+    function userLogout(){
+        localStorage.removeItem('token');
+        navigate('/')
+    }
+
+      // logout handler function
+    function userUpdate(){
+        navigate('/profile')
+    }
 
     return (
         <AppBar 
@@ -50,7 +63,7 @@ const Navbar = ({
                     <IconButton onClick={()=> setIsSidebarOpen(!isSidebarOpen)}>
                         <MenuIcon/>
                     </IconButton>
-                    <FlexBetween 
+                    {/* <FlexBetween 
                         backgroundColor = {theme.palette.background.alt}
                         borderRadius = "9px"
                         gap = "3rem"
@@ -60,7 +73,7 @@ const Navbar = ({
                         <IconButton>
                             <Search/>
                         </IconButton>
-                    </FlexBetween>
+                    </FlexBetween> */}
                 </FlexBetween>
                 
                 {/* RightSide */}
@@ -72,9 +85,9 @@ const Navbar = ({
                             <LightModeOutlined sx ={{fontSize: "25px"}}/>
                         )}
                     </IconButton>
-                    <IconButton>
+                    {/* <IconButton>
                         <SettingsOutlined sx ={{fontSize: "25px"}}/>
-                    </IconButton>
+                    </IconButton> */}
 
                     <FlexBetween>
                         <Button onClick={handleClick} sx={{ display:"flex", justifyContent: "space-between", alignItems:"center", textTransform:"none", gap: "1rem"}}>
@@ -100,7 +113,10 @@ const Navbar = ({
                             />
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"center"}}>
-                            <MenuItem onClick={handleClose}>Log out</MenuItem>
+                            <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
+                            <MenuItem onClick={handleClose}>Add product</MenuItem>
+                            <MenuItem onClick={handleClose}>New transaction</MenuItem>
+                            <MenuItem onClick={() => {userLogout(); handleClose();}}>Log out</MenuItem>
                         </Menu>
                     </FlexBetween>
                 </FlexBetween>
