@@ -45,10 +45,17 @@ const Navbar = ({
         navigate('/')
     }
 
-      // logout handler function
+      // Navigate to update user page
     function userUpdate(){
         navigate('/profile')
     }
+
+      // Navigate to update user page
+    function addProduct(){
+        navigate('/addproduct')
+    }
+
+
 
     return (
         <AppBar 
@@ -115,7 +122,7 @@ const Navbar = ({
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"center"}}>
                         <MenuItem onClick={() => {userUpdate();handleClose();}}>Add user</MenuItem>
                             <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
-                            <MenuItem onClick={handleClose}>Add product</MenuItem>
+                            <MenuItem onClick={() => {addProduct();handleClose();}}>Add Product</MenuItem>
                             <MenuItem onClick={handleClose}>New transaction</MenuItem>
                             <MenuItem onClick={() => {userLogout(); handleClose();}}>Log out</MenuItem>
                         </Menu>

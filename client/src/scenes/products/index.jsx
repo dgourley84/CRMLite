@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import Header from "components/Header";
 import { useGetProductsQuery } from "state/api";
+import { useNavigate } from 'react-router-dom';
 
 //product component
 const Product = ({
@@ -28,6 +29,12 @@ const Product = ({
 }) => {
     const theme = useTheme();
     const [isExpanded, setIsExpanded] = useState(false);
+     const navigate = useNavigate()
+
+    // Navigate to update user page
+      function productUpdate(){
+        navigate('/updateproduct')
+    }
 
     return (
         <Card
@@ -58,7 +65,7 @@ const Product = ({
                 variant="contained"
                 color="primary"
                 size="small"
-                onClick={()=> setIsExpanded(!isExpanded)}
+                onClick={()=> productUpdate()}
                 >
                     Update Product
                 </Button>
