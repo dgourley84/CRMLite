@@ -4,7 +4,7 @@ import { useAuthStore } from "../store/store";
 export const AuthorizeUser = ({ children }) => {
     const token = localStorage.getItem('token');
 
-    if(!token){
+    if (!token) {
         return <Navigate to={'/'} replace={true}></Navigate>
     }
 
@@ -14,7 +14,7 @@ export const AuthorizeUser = ({ children }) => {
 
 export const ProtectRoute = ({ children }) => {
     const username = useAuthStore.getState().auth.username;
-    if(!username){
+    if (!username) {
         return <Navigate to={'/'} replace={true}></Navigate>
     }
     return children;

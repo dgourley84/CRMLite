@@ -50,7 +50,14 @@ const Navbar = ({
         navigate('/profile')
     }
 
-      // Navigate to update user page
+      // Navigate to add a user page
+      function userAdd(){
+        navigate('/adduser')
+    }
+
+    
+
+      // Navigate to update product page
     function addProduct(){
         navigate('/addproduct')
     }
@@ -120,7 +127,7 @@ const Navbar = ({
                             />
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"center"}}>
-                        <MenuItem onClick={() => {userUpdate();handleClose();}}>Add user</MenuItem>
+                        <MenuItem onClick={() => {userAdd();handleClose();}}>Add user</MenuItem>
                             <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
                             <MenuItem onClick={() => {addProduct();handleClose();}}>Add Product</MenuItem>
                             <MenuItem onClick={handleClose}>New transaction</MenuItem>
