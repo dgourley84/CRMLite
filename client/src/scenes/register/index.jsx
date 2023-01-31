@@ -1,23 +1,24 @@
-import React, { useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import React, { useState } from 'react';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
 import { useFormik } from 'formik';
-import toast, { Toaster } from 'react-hot-toast';
+import convertToBase64 from 'helpers/convert';
 import { registerUser } from 'helpers/helper';
 import { registerValidation } from 'helpers/validate';
-import convertToBase64 from 'helpers/convert';
+import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -56,17 +57,22 @@ export default function SignUp() {
         success:<b>Registered successfully</b>,
         error:<b>Could not register</b>
       });
-
-      registerPromise.then(function(){navigate ('/dashboard')})
+  
+      registerPromise.then(res => {
+        let { token } = res.data;
+        localStorage.setItem('token', token);
+        navigate('/dashboard');
+      });
     }
-  })
+  });
+  
 
   /**Formik doesnt support file uploade so need to create this in a helper */
 
-  const onUpload = async e => {
-    const base64 = await convertToBase64(e.target.files[0]);
-    setFile(base64)
-  }
+  // const onUpload = async e => {
+  //   const base64 = await convertToBase64(e.target.files[0]);
+  //   setFile(base64)
+  // }
 
 
   return (

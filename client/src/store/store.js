@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 
 export const useAuthStore = create((set) => ({
-    auth : {
+    auth: {
         email: "",
         active: false
     },
-    setEmail : (email) => set((state)=>({auth:{...state.auth, email : email}}))
+    setEmail: (email) => set((state) => ({ auth: { ...state.auth, email: email } }))
 }))
+

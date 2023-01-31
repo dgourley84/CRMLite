@@ -21,6 +21,7 @@ import Register from "scenes/register"
 import UpdateUser from "scenes/profile";
 import UpdateProduct from "scenes/productUpdate";
 import AddProduct from "scenes/productAdd";
+import AddUser from "scenes/profileAdd";
 
 
 //auth middleware
@@ -40,6 +41,7 @@ function App() {
               <Route exact path="/register" element={<Register />} />
               <Route exact path="/login" element={<Login />} />
               <Route path="/" element={<Navigate replace to="/login" />} />
+              <Route path="/adduser" element={<AddUser/>}/>
               <Route path="/profile" element={<UpdateUser/>}/>
               <Route path="/updateproduct" element={<UpdateProduct/>}/>
               <Route path="/addproduct" element={<AddProduct/>}/>
