@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import otpGenerator from "otp-generator";
 import User from "../models/User.js";
-import ENV from "../utils/jwtConfig.js";
+
+
 
 
 
@@ -97,7 +98,7 @@ export async function login(req, res) {
                         const token = jwt.sign({
                             userId: user._id,
                             email: user.email
-                        }, ENV.JWT_SECRET, { expiresIn: "24h" });
+                        }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
                         return res.status(200).send({
                             msg: "Login Successful...!",
