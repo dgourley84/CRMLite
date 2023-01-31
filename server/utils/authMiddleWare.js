@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import ENV from '../utils/jwtConfig.js';
+
 
 /** auth middleware */
 export default async function Auth(req, res, next) {
