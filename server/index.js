@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import passport from 'passport';
+import path from "path";
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import loginRoutes from "./routes/login.js";
@@ -48,13 +49,22 @@ app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 
-
 //JWT Login
 app.get('/', (req, res) => {
     res.status(201).json("home GET Request");
 });
 app.use(express.json());
 app.use("/home", loginRoutes);
+
+//serve frontend
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')))
+
+    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html')))
+} else {
+    app.get('/', (req, res) => res.send('Please set to production'))
+}
 
 
 // Mongoose Setup
