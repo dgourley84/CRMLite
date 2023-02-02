@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import { Box, useMediaQuery } from "@mui/material";
-import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 import { useGetUserQuery } from "state/api.js";
 
 const Layout = () => {
@@ -11,7 +11,7 @@ const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const userId = useSelector((state) => state.global.userId);
   const { data } = useGetUserQuery(userId);
-  console.log("Users", data)
+  
   
 
   return (
