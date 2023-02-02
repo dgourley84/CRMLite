@@ -61,7 +61,7 @@ export default function SignUp() {
       registerPromise.then(res => {
         let { token } = res.data;
         localStorage.setItem('token', token);
-        navigate('/dashboard');
+        navigate('/login');
       });
     }
   });
