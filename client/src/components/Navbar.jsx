@@ -59,7 +59,7 @@ const Navbar = ({
         const fetchUserData = async () => {
             const token = localStorage.getItem("token");
             if (!token) {
-                setUserData(null);
+                setUserData("");
                 return;
             }
     
