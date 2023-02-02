@@ -7,12 +7,12 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import passport from 'passport';
-import path from "path";
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import loginRoutes from "./routes/login.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
+const path = require("path");
 
 
 
@@ -57,14 +57,13 @@ app.use(express.json());
 app.use("/home", loginRoutes);
 
 //serve frontend
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')))
 
-// if (process.env.NODE_ENV === 'production') {
-//     app.use(express.static(path.join(__dirname, '../client/build')))
-
-//     app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html')))
-// } else {
-//     app.get('/', (req, res) => res.send('Please set to production'))
-// }
+    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html')))
+} else {
+    app.get('/', (req, res) => res.send('Please set to production'))
+}
 
 
 // Mongoose Setup
