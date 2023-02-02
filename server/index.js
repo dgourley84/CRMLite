@@ -12,7 +12,6 @@ import generalRoutes from "./routes/general.js";
 import loginRoutes from "./routes/login.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
-const path = require("path");
 
 
 
@@ -57,13 +56,13 @@ app.use(express.json());
 app.use("/home", loginRoutes);
 
 //serve frontend
-// if (process.env.NODE_ENV === 'production') {
-//     app.use(express.static(path.join(__dirname, '../client/build')))
-
-//     app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html')))
-// } else {
-//     app.get('/', (req, res) => res.send('Please set to production'))
-// }
+const path = require('path')
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'client/build')))
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'))
+})
 
 
 // Mongoose Setup
