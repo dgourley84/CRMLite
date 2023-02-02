@@ -1,23 +1,15 @@
 import {
-  Box, Button, Container, FormControl, FormHelperText, Input, InputLabel, Rating, Typography, useTheme
+  Box, Button, Container, FormControl, FormHelperText, Input, InputLabel, Typography, useTheme
 } from "@mui/material";
 import axios from "axios";
 import Header from "components/Header";
-import { useFormik } from 'formik';
-import convertToBase64 from 'helpers/convert';
-import { getUser, updateUser } from 'helpers/helper';
-import { profileValidation } from 'helpers/validate';
-import useFetch from 'hooks/fetch.hook';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from 'store/store';
 
 
 export default function UpdateProfile() {
   const [name, setName] = useState({})
   const [email, setEmail] = useState({})
-  const [password, setPassword] = useState({})
   const [city, setCity] = useState({})
   const [state, setState] = useState({})
   const [country, setCountry] = useState({})
@@ -58,43 +50,43 @@ export default function UpdateProfile() {
           }}
         >
         <Typography variant="h2" component="div" color="secondary" sx={{mb: 3}}>
-            Create new customer
+            Update your information
         </Typography>
         <Box component="main" noValidate sx={{mt:3}} gap="10">
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="name-input">Full name</InputLabel>
             <Input id="name-input" aria-describedby="name-helper-text" onChange={e => setName(e.target.value)}/>
-            <FormHelperText id="name-helper-text">Enter full name</FormHelperText>
+            <FormHelperText id="name-helper-text">Update full name</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="email-input">Email address</InputLabel>
             <Input id="email-input" aria-describedby="email-helper-text" onChange={e => setEmail(e.target.value)}/>
-            <FormHelperText id="email-helper-text">We'll never share your email. Enter your email.</FormHelperText>
+            <FormHelperText id="email-helper-text">We'll never share your email. Update your email.</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="phone-input">Phone Number</InputLabel>
             <Input id="phone-input" aria-describedby="phone-helper-text" onChange={e => setPhoneNumber(e.target.value)}/>
-            <FormHelperText id="phone-helper-text">Enter phone number</FormHelperText>
+            <FormHelperText id="phone-helper-text">Update phone number</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="country-input">Country</InputLabel>
             <Input id="city-input" aria-describedby="county-helper-text" onChange={e => setCountry(e.target.value)}/>
-            <FormHelperText id="country-helper-text">Enter country</FormHelperText>
+            <FormHelperText id="country-helper-text">Update country</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="City-input">City</InputLabel>
             <Input id="city-input" aria-describedby="city-helper-text" onChange={e => setCity(e.target.value)}/>
-            <FormHelperText id="city-helper-text">Enter city</FormHelperText>
+            <FormHelperText id="city-helper-text">Update city</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="state-input">State</InputLabel>
             <Input id="state-input" aria-describedby="state-helper-text" onChange={e => setState(e.target.value)}/>
-            <FormHelperText id="state-helper-text">Enter state</FormHelperText>
+            <FormHelperText id="state-helper-text">Update state</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
             <InputLabel htmlFor="occupation-input">Occupation</InputLabel>
             <Input id="occupation-input" aria-describedby="occupation-helper-text" onChange={e => setOccupation(e.target.value)}/>
-            <FormHelperText id="occupation-helper-text">Enter occupation</FormHelperText>
+            <FormHelperText id="occupation-helper-text">Update occupation</FormHelperText>
           </FormControl>
         </Box>
       </Box>
