@@ -47,6 +47,11 @@ const Navbar = ({
         navigate('/adduser')
     }
 
+    // Navigate to add a user page
+      function adminAdd(){
+        navigate('/register')
+    }
+
     // Navigate to update product page
     function addProduct(){
         navigate('/addproduct')
@@ -146,10 +151,11 @@ const Navbar = ({
                             />
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"center"}}>
-                        <MenuItem onClick={() => {userAdd();handleClose();}}>Add user</MenuItem>
-                            <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
+                            <MenuItem onClick={() => {userAdd();handleClose();}}>Add Customer</MenuItem>
+                            <MenuItem onClick={() => {adminAdd();handleClose();}}>Add Admin</MenuItem>
+                            <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit your details</MenuItem>
                             <MenuItem onClick={() => {addProduct();handleClose();}}>Add Product</MenuItem>
-                            <MenuItem onClick={handleClose}>New transaction</MenuItem>
+                            <MenuItem onClick={handleClose}>New Transaction</MenuItem>
                             <MenuItem onClick={() => {userLogout(); handleClose();}}>Log out</MenuItem>
                         </Menu>
                     </FlexBetween>

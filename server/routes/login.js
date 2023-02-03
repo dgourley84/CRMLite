@@ -24,6 +24,7 @@ router.route("/createResetSession").get(controller.createResetSession) // reset 
 
 //Put methods
 router.route("/updateUser").put(Auth, controller.updateUser) // is used to update the user profile
+router.route("/updateCustomer").put(controller.updateCustomer)//this is used to update the customer profile
 router.route("/resetPassword").put(controller.verifyUser, controller.resetPassword) // use to rest password
 
 
