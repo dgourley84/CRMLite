@@ -64,7 +64,8 @@ const Customers = () => {
 						color="secondary"
 						onClick={() => {
 							localStorage.setItem("CustomerID", row.id);
-							navigate(`/transactions/update/${row.id}`);
+							// Navigate to the new transactions page
+							navigate(`/Checkout`);
 						}}
 					>
 						Add Transaction
@@ -84,8 +85,9 @@ const Customers = () => {
 						size="small"
 						color="primary"
 						onClick={() => {
-							localStorage.setItem("CustomerID", row._id);
-							navigate(`/transactions/update/${row._id}`);
+							localStorage.setItem("CustomerID", row.id);
+							//Navigate to the update customer update page
+							navigate(`/updateCustomer`);
 						}}
 					>
 						Update

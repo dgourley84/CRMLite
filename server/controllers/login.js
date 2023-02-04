@@ -289,25 +289,28 @@ export async function createCustomer(req, res) {
     }
 }
 
+/**POST http://localhost:5001/home/updateCustomer
+ * @param {
+* "name":"example123",
+* "email":"test@email.com",
+* "password":"test1",
+* "city": "brisbane",
+* "state": "QLD",
+* "country":"AU",
+* "occupation": "Accountant",
+* "phoneNumber": "1234567890",
+* "role": "user"
+* }
+*/
 export async function updateCustomer(req, res) {
     try {
-        const { userId } = req.user;
         const body = req.body;
-
-        //check if there is a userId in the token body
-        if (!userId) {
-            return res.status(401).json({ error: "Unauthorized access. User not found in request." });
-        }
-        //search DB to find user by ID.
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ error: "User not found in the database." });
-        }
+        const userId = body._id;
 
         // update the data
         const updateResult = await User.updateOne({ _id: userId }, body);
         if (!updateResult) {
-            return res.status(500).json({ error: "Failed to update user. Internal server error." });
+            return res.status(500).json({ error: "Couldn't find user." });
         }
 
         return res.status(200).json({ msg: "User updated successfully." });
