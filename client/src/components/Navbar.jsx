@@ -54,6 +54,10 @@ const Navbar = ({
     function addProduct(){
         navigate('/addproduct')
     }
+     //Navigate to new transaction page
+    function newTransaction(){
+        navigate('/Checkout')
+    }
 
 
 
@@ -123,7 +127,7 @@ const Navbar = ({
                         <MenuItem onClick={() => {userUpdate();handleClose();}}>Add user</MenuItem>
                             <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
                             <MenuItem onClick={() => {addProduct();handleClose();}}>Add Product</MenuItem>
-                            <MenuItem onClick={handleClose}>New transaction</MenuItem>
+                            <MenuItem onClick={() => {newTransaction();handleClose();}}>New Transaction</MenuItem>
                             <MenuItem onClick={() => {userLogout(); handleClose();}}>Log out</MenuItem>
                         </Menu>
                     </FlexBetween>

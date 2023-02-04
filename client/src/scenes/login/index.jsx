@@ -82,7 +82,12 @@ export default function SignIn() {
   return (
     <ThemeProvider theme={theme}>
       <Toaster position='bottom-center' reverseOrder={false}></Toaster>
-      <Container component="main" maxWidth="xs" sx={{backgroundColor:theme.palette.primary[500]}} >
+      <Container component="main" maxWidth="xs" sx={{display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: theme.palette.background.alt, //setting background to be flipped based on dark mode
+            borderRadius: "0.55rem",
+            p:3, //adds padding around the enitre form 
+          }} >
         <CssBaseline />
         <Box
           sx={{

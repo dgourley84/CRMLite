@@ -21,6 +21,7 @@ import Register from "scenes/register"
 import UpdateUser from "scenes/profile";
 import UpdateProduct from "scenes/productUpdate";
 import AddProduct from "scenes/productAdd";
+import Checkout from "scenes/newTransaction/Checkout";
 
 
 //auth middleware
@@ -43,6 +44,7 @@ function App() {
               <Route path="/profile" element={<UpdateUser/>}/>
               <Route path="/updateproduct" element={<UpdateProduct/>}/>
               <Route path="/addproduct" element={<AddProduct/>}/>
+              <Route path="/Checkout" element={<Checkout/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/products" element={<Products/>}/>
               <Route path="/customers" element={<Customers />} />
