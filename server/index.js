@@ -17,11 +17,8 @@ import salesRoutes from "./routes/sales.js";
 import { ApolloServer, gql } from 'apollo-server-express';
 //import { typeDefs, resolvers } from './schemas'
 
-import typeDefs from './schemas/typeDefs.js';
 import resolvers from './schemas/resolver.js';
-
-
-
+import typeDefs from './schemas/typeDefs.js';
 
 //data imports
 import {
@@ -36,33 +33,7 @@ import ProductStat from "./models/ProductStat.js";
 //import Transaction from "./models/Transaction.js";
 import User from "./models/User.js";
 
-async function startServer() {
-    const app = express();
-    const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers,
-    });
 
-    await apolloServer.start()
-
-    apolloServer.applyMiddleware({app: app});
-
-    app.use((req, res) => {
-        res.send('Hello from express apollo server');
-        // res.header('Access-Control-Allow-Origin', '*');
-        // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    })
-
-    await mongoose.connect('mongodb+srv://dallasg:C2b39j5k1@cluster0.emfcrmm.mongodb.net/?retryWrites=true&w=majority', {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-    });
-    console.log('Mongoose connected...');
-    
-    app.listen(4000, () => console.log("Server running on port 4000"));
-}
-
-startServer();
 
 
 // Configuration and middlewares
@@ -90,16 +61,6 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use("/home", loginRoutes);
 
-// //serve frontend
-// const path = require('path')
-// // Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, 'client/build')))
-// // Anything that doesn't match the above, send back index.html
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname + '/client/build/index.html'))
-// })
-
-
 // Mongoose Setup
 const PORT = process.env.PORT || 9000;
 mongoose
@@ -119,3 +80,31 @@ mongoose
         // AffiliateStat.insertMany(dataAffiliateStat);
 
     }).catch((error) => console.log(`${error} did not connect`))
+
+async function startServer() {
+    const app = express();
+    const apolloServer = new ApolloServer({
+        typeDefs,
+        resolvers,
+    });
+
+    await apolloServer.start()
+
+    apolloServer.applyMiddleware({ app: app });
+
+    app.use((req, res) => {
+        res.send('Hello from express apollo server');
+        // res.header('Access-Control-Allow-Origin', '*');
+        // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    })
+
+    await mongoose.connect(process.env.MONGO_URL, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    });
+    console.log('Mongoose connected...');
+
+    app.listen(4000, () => console.log("Server running on port 4000"));
+}
+
+startServer();
