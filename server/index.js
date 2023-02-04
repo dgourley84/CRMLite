@@ -83,7 +83,6 @@ mongoose
 
 const apolloPort = process.env.APOLLO_PORT || 4000;
 async function startServer() {
-    const app = express();
     const apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
@@ -95,8 +94,6 @@ async function startServer() {
 
     app.use((req, res) => {
         res.send('Hello from express apollo server');
-        // res.header('Access-Control-Allow-Origin', '*');
-        // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     })
 
     await mongoose.connect(process.env.MONGO_URL, {
@@ -105,7 +102,7 @@ async function startServer() {
     });
     console.log('Mongoose connected...');
 
-    app.listen(apolloPort, () => console.log("Server running on port 4000"));
+    app.listen(apolloPort, () => console.log(`Apollo Server Port: ${apolloPort}`));
 }
 
 startServer();
