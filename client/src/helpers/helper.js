@@ -14,12 +14,13 @@ export async function authenticate(email) {
 }
 
 /**get User details */
-export async function getUser({ email }) {
+export async function getUser() {
     try {
-        const { data } = await axios.get(`/home/user/${email}`);
-        return { data };
+        const token = await localStorage.getItem('token');
+        const data = await axios.get('/home/user', { headers: { "Authorization": `Bearer ${token}` } })
+        return Promise.resolve({ data })
     } catch (error) {
-        return { error: "Password does not match" }
+        return { error: "User not found" }
     }
 }
 

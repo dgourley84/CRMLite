@@ -38,7 +38,7 @@ const theme = createTheme();
 export default function SignUp() {
 
   const navigate = useNavigate()
-  const [file,setFile] = useState()
+  
 
   const formikRegister =useFormik({
     initialValues:{
@@ -50,7 +50,7 @@ export default function SignUp() {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit : async values => {
-      values = await Object.assign(values, { profile : file || ''})
+      values = await Object.assign(values)
       let registerPromise = registerUser(values)
       toast.promise(registerPromise,{
         loading: 'Creating...',
@@ -61,7 +61,7 @@ export default function SignUp() {
       registerPromise.then(res => {
         let { token } = res.data;
         localStorage.setItem('token', token);
-        navigate('/dashboard');
+        navigate('/login');
       });
     }
   });
@@ -86,13 +86,14 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            bgcolor:theme.palette.primary[500]
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: theme.palette.secondary[200] }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Register admin
           </Typography>
           <Box component="form" noValidate onSubmit={formikRegister.handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -140,18 +141,12 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Register
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
+            
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
     </ThemeProvider>
   );

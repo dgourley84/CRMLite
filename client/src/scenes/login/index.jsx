@@ -78,7 +78,12 @@ export default function SignIn() {
   return (
     <ThemeProvider theme={theme}>
       <Toaster position='bottom-center' reverseOrder={false}></Toaster>
-      <Container component="main" maxWidth="xs" sx={{backgroundColor:theme.palette.primary[500]}} >
+      <Container component="main" maxWidth="xs" sx={{display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: theme.palette.background.alt, //setting background to be flipped based on dark mode
+            borderRadius: "0.55rem",
+            p:3, //adds padding around the enitre form 
+          }} >
         <CssBaseline />
         <Box
           sx={{
@@ -129,7 +134,7 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -140,7 +145,7 @@ export default function SignIn() {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

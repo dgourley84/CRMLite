@@ -1,9 +1,9 @@
-import React from "react";
 import { Box, useTheme } from "@mui/material";
-import { useGetAdminsQuery } from "state/api";
 import { DataGrid } from "@mui/x-data-grid";
-import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
+import Header from "components/Header";
+import React from "react";
+import { useGetAdminsQuery } from "state/api";
 
 const Admin = () => {
   const theme = useTheme();
@@ -31,8 +31,11 @@ const Admin = () => {
       headerName: "Phone Number",
       flex: 0.5,
       renderCell: (params) => {
+        if (!params.value || params.value === "") {
+          return "No value";
+        }
         return params.value.replace(/^(\d{3})(\d{3})(\d{4})/, "($1)$2-$3");
-      },
+      }
     },
     {
       field: "country",

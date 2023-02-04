@@ -1,81 +1,44 @@
-import React, { useState } from 'react'
 import {
-  Box,
-  Container,
-  Button,
-  Typography,
-  Rating,
-  useTheme,
-  FormControl,
-  InputLabel,
-  Input,
-  FormHelperText,
+  Box, Button, Container, FormControl, FormHelperText, Input, InputLabel, Typography, useTheme
 } from "@mui/material";
+import axios from "axios";
 import Header from "components/Header";
+import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useFormik } from 'formik';
-import { profileValidation } from 'helpers/validate';
-import convertToBase64 from 'helpers/convert';
-import useFetch from 'hooks/fetch.hook';
-import { updateUser } from 'helpers/helper';
-import { useNavigate } from 'react-router-dom';
-import profileImg from '../../assets/profile.jpg';
-import styles from '../../assets/Profile.module.css';
-import extend from '../../assets/Username.module.css'
-import { useAuthStore } from 'store/store';
+
 
 export default function UpdateProfile() {
+  const [name, setName] = useState({})
+  const [email, setEmail] = useState({})
+  const [city, setCity] = useState({})
+  const [state, setState] = useState({})
+  const [country, setCountry] = useState({})
+  const [occupation, setOccupation] = useState({})
+  const [phoneNumber, setPhoneNumber] = useState({})
 
-  const [file, setFile] = useState();
-  const navigate = useNavigate()
-  const {email} =useAuthStore(state=> state.auth)
-  const [{ isLoading, apiData, serverError }] = useFetch();
- 
-  const formikProfile = useFormik({
-    initialValues : {
-      name : apiData?.name || '',
-      email: apiData?.email || '',
-      city: apiData?.city || '',
-      state : apiData?.state || '',
-      country : apiData?.country || '',
-      occupation : apiData?.occupation || '',
-      phoneNumber : apiData?.phoneNumber || '',
-    },
-    enableReinitialize: true,
-    validate : profileValidation,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit : async values => {
-      values = await Object.assign(values, { profile : file || apiData?.profile || ''})
-      let updatePromise = updateUser(values);
-
-      toast.promise(updatePromise, {
-        loading: 'Updating...',
-        success : <b>Update Successfully...!</b>,
-        error: <b>Could not Update!</b>
+  async function handleSubmit(evt) {
+    const token = localStorage.getItem("token");
+    evt.preventDefault();
+    console.info("Adding user");
+    try {
+      const values = {name, email,city, state,country,occupation,phoneNumber};
+      const response = await axios.put("/home/updateUser", values,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-
+      console.log(response);
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update profile. Please try again.");
     }
-  })
-
-  /** formik doensn't support file upload so we need to create this handler */
-  const onUpload = async e => {
-    const base64 = await convertToBase64(e.target.files[0]);
-    setFile(base64);
   }
 
   const theme = useTheme();
 
-  // logout handler function
-  function userLogout(){
-    localStorage.removeItem('token');
-    navigate('/')
-  }
-
-  if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
-  if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
-
   return (
+    <form onSubmit={evt => handleSubmit(evt)}>
     <Container component="main" maxWidth="md">   
       <Box
           sx={{
@@ -83,58 +46,59 @@ export default function UpdateProfile() {
             flexDirection: 'column',
             backgroundColor: theme.palette.background.alt, //setting background to be flipped based on dark mode
             borderRadius: "0.55rem",
-            p:3, //adds padding around the enitre form
+            p:3, //adds padding around the entire form
           }}
         >
         <Typography variant="h2" component="div" color="secondary" sx={{mb: 3}}>
-            Profile information
+            Update your information
         </Typography>
-        <Box component="form" noValidate sx={{mt:3}} gap="10">
+        <Box component="main" noValidate sx={{mt:3}} gap="10">
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Full name</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('name')} />
-            <FormHelperText id="my-helper-text">Update full name</FormHelperText>
+            <InputLabel htmlFor="name-input">Full name</InputLabel>
+            <Input id="name-input" aria-describedby="name-helper-text" onChange={e => setName(e.target.value)}/>
+            <FormHelperText id="name-helper-text">Update full name</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Email address</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('email')} />
-            <FormHelperText id="my-helper-text">We'll never share your email. Update your email.</FormHelperText>
+            <InputLabel htmlFor="email-input">Email address</InputLabel>
+            <Input id="email-input" aria-describedby="email-helper-text" onChange={e => setEmail(e.target.value)}/>
+            <FormHelperText id="email-helper-text">We'll never share your email. Update your email.</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Phone Number</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('phoneNumber')} />
-            <FormHelperText id="my-helper-text">Update phone number</FormHelperText>
+            <InputLabel htmlFor="phone-input">Phone Number</InputLabel>
+            <Input id="phone-input" aria-describedby="phone-helper-text" onChange={e => setPhoneNumber(e.target.value)}/>
+            <FormHelperText id="phone-helper-text">Update phone number</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Country</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('country')} />
-            <FormHelperText id="my-helper-text">Update country</FormHelperText>
+            <InputLabel htmlFor="country-input">Country</InputLabel>
+            <Input id="city-input" aria-describedby="county-helper-text" onChange={e => setCountry(e.target.value)}/>
+            <FormHelperText id="country-helper-text">Update country</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">City</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('city')} />
-            <FormHelperText id="my-helper-text">Update city</FormHelperText>
+            <InputLabel htmlFor="City-input">City</InputLabel>
+            <Input id="city-input" aria-describedby="city-helper-text" onChange={e => setCity(e.target.value)}/>
+            <FormHelperText id="city-helper-text">Update city</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">State</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('state')} />
-            <FormHelperText id="my-helper-text">Update state</FormHelperText>
+            <InputLabel htmlFor="state-input">State</InputLabel>
+            <Input id="state-input" aria-describedby="state-helper-text" onChange={e => setState(e.target.value)}/>
+            <FormHelperText id="state-helper-text">Update state</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Occupation</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProfile.getFieldProps('occupation')} />
-            <FormHelperText id="my-helper-text">Update occupation</FormHelperText>
+            <InputLabel htmlFor="occupation-input">Occupation</InputLabel>
+            <Input id="occupation-input" aria-describedby="occupation-helper-text" onChange={e => setOccupation(e.target.value)}/>
+            <FormHelperText id="occupation-helper-text">Update occupation</FormHelperText>
           </FormControl>
         </Box>
       </Box>
       <Box sx={{mt: 2, display: 'flex', justifyContent: 'flex-end'}}>
-        <Button variant="contained" color="primary" type="submit" disabled={!formikProfile.isValid || formikProfile.isSubmitting} sx={{mb: 2}}>
-          Update Profile
+        <Button variant="contained" color="primary" type="submit" sx={{mb: 2}}>
+          Create User
         </Button>
-        <Button variant="contained" color="secondary" onClick={formikProfile.handleReset} sx={{mb: 2,ml:2}}>
-          Clear Form
+        <Button variant="contained" color="secondary" sx={{mb: 2,ml:2}}>
+          Reset
         </Button>
       </Box>
     </Container>
+    </form>
   )
 }
