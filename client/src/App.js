@@ -15,6 +15,7 @@ import Monthly from "scenes/monthly";
 import Overview from "scenes/overview";
 import Performance from "scenes/performance";
 import AddProduct from "scenes/productAdd";
+import Checkout from "scenes/newTransaction/Checkout";
 import Products from "scenes/products";
 import UpdateProduct from "scenes/productUpdate";
 import UpdateUser from "scenes/profile";
@@ -22,6 +23,7 @@ import AddUser from "scenes/profileAdd";
 import Register from "scenes/register";
 import Transactions from "scenes/transactions";
 import { themeSettings } from "theme";
+
 
 
 //auth middleware
@@ -40,6 +42,7 @@ function App() {
             <Route element={<Layout />}>
               <Route exact path="/login" element={<Login />} />
               <Route path="/" element={<Navigate replace to="/login" />} />
+              <Route path="/Checkout" element={<Checkout/>}/>
               <Route path="/register" element={<Register />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/profile" element={<UpdateUser />} />
