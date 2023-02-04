@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import React, { useEffect, useState } from 'react';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import toast, { Toaster } from 'react-hot-toast';
+import Typography from '@mui/material/Typography';
 import { useFormik } from 'formik';
-import { useAuthStore } from 'store/store';
-import { emailValidate, passwordValidate } from 'helpers/validate';
 import { verifyPassword } from 'helpers/helper';
+import { emailValidate, passwordValidate } from 'helpers/validate';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from 'store/store';
 
 function Copyright(props) {
   return (
@@ -42,29 +42,24 @@ export default function SignIn() {
   
   const [email, setEmail] = useState('');
 
-  const formikEmail = useFormik({
+  const formikLogin = useFormik({
     initialValues: {
-      email : ''
+      email: '',
+      password: ''
     },
-    validate: emailValidate,
+    validate: values => {
+      let errors = {};
+      if (!values.email) {
+        errors.email = 'Email is required';
+      }
+      if (!values.password) {
+        errors.password = 'Password is required';
+      }
+      return errors;
+    },
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit : async values => {
-      setEmail(values.email)
-      console.log(values)
-      formikPassword.setFieldValue("email",values.email)
-    }
-  })
-
-  const formikPassword = useFormik({
-    initialValues: {
-      email:'',
-      password : ''
-    },
-    validate: passwordValidate,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit : async values => {
+    onSubmit: async values => {
       let loginPromise = verifyPassword({email:values.email , password:values.password})
       toast.promise(loginPromise, {
         loading: 'Checking...',
@@ -77,7 +72,8 @@ export default function SignIn() {
         navigate('/dashboard')
       })
     }
-  })
+  });
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -103,7 +99,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={formikPassword.handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={formikLogin.handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -113,7 +109,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
-              {...formikEmail.getFieldProps('email')}
+              {...formikLogin.getFieldProps('email')}
             />
             <TextField
               margin="normal"
@@ -124,7 +120,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-              {...formikPassword.getFieldProps('password')}
+              {...formikLogin.getFieldProps('password')}
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -138,7 +134,7 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -149,7 +145,7 @@ export default function SignIn() {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

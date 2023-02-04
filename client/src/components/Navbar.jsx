@@ -1,29 +1,21 @@
-import React, { useState } from "react";
 import {
-  LightModeOutlined,
-  DarkModeOutlined,
-  Menu as MenuIcon,
-  Search,
-  SettingsOutlined,
-  ArrowDropDownOutlined,
+    ArrowDropDownOutlined, DarkModeOutlined, LightModeOutlined, Menu as MenuIcon,
+    Search,
+    SettingsOutlined
 } from "@mui/icons-material";
+import {
+    AppBar, Box, Button, IconButton,
+    InputBase, Menu,
+    MenuItem, Toolbar, Typography, useTheme
+} from "@mui/material";
+import axios from "axios";
 import FlexBetween from "components/FlexBetween";
+import { getUser } from "helpers/helper";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { setMode } from "state";
 import profileImage from "../assets/profile.jpg";
-import { useNavigate } from 'react-router-dom';
-import {
-    AppBar,
-    Button,
-    Box,
-    Typography,
-    IconButton,
-    InputBase,
-    Toolbar,
-    Menu,
-    MenuItem,
-    useTheme,
-  } from "@mui/material";
 
 const Navbar = ({
     user,
@@ -50,7 +42,17 @@ const Navbar = ({
         navigate('/profile')
     }
 
-      // Navigate to update user page
+      // Navigate to add a user page
+      function userAdd(){
+        navigate('/adduser')
+    }
+
+    // Navigate to add a user page
+      function adminAdd(){
+        navigate('/register')
+    }
+
+    // Navigate to update product page
     function addProduct(){
         navigate('/addproduct')
     }
@@ -59,7 +61,36 @@ const Navbar = ({
         navigate('/Checkout')
     }
 
+    const [userData, setUserData] = useState({});
 
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                setUserData("");
+                return;
+            }
+    
+            try {
+                const response = await axios.get("/home/user", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setUserData(response.data);
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    localStorage.removeItem("token");
+                    setUserData(null);
+                } else {
+                    console.error(error);
+                }
+            }
+        };
+    
+        fetchUserData();
+    }, []);
 
     return (
         <AppBar 
@@ -113,10 +144,10 @@ const Navbar = ({
                             />
                             <Box textAlign="left">
                                 <Typography fontWeight="bold" fontSize = "0.85rem" sx={{color:theme.palette.secondary[100]}}>
-                                {user.name}
+                                {userData.name || ""}
                                 </Typography>
                                 <Typography fontSize = "0.75rem" sx={{color:theme.palette.secondary[200]}}>
-                                {user.occupation}
+                                {userData.occupation || ""}
                                 </Typography>
                             </Box>
                             <ArrowDropDownOutlined
@@ -124,8 +155,9 @@ const Navbar = ({
                             />
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"center"}}>
-                        <MenuItem onClick={() => {userUpdate();handleClose();}}>Add user</MenuItem>
-                            <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit user</MenuItem>
+                            <MenuItem onClick={() => {userAdd();handleClose();}}>Add Customer</MenuItem>
+                            <MenuItem onClick={() => {adminAdd();handleClose();}}>Add Admin</MenuItem>
+                            <MenuItem onClick={() => {userUpdate();handleClose();}}>Edit your details</MenuItem>
                             <MenuItem onClick={() => {addProduct();handleClose();}}>Add Product</MenuItem>
                             <MenuItem onClick={() => {newTransaction();handleClose();}}>New Transaction</MenuItem>
                             <MenuItem onClick={() => {userLogout(); handleClose();}}>Log out</MenuItem>
