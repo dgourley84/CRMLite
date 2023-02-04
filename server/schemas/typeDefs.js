@@ -11,6 +11,7 @@ const typeDefs = gql`
         id: ID
         userId: ID
         cost: String
+        products: [Product]
     }
     type Product {
         id: ID
@@ -26,11 +27,12 @@ const typeDefs = gql`
         getAllUsers: [User]
         getAllTransactions: [Transaction]
         getAllProducts: [Product]
+        getOneUser(id: ID!): User!
     }
     type Mutation {
         createUser(name: String!, email: String!, password: String!, city: String, state: String, country: String, company: String, phoneNumber: String): User
         createProduct(name: String, price: Int, description: String, category: String, rating: Int, supply: Int): Product
-        createTransaction(userId: String, cost: Int): Transaction
+        createTransaction(userId: String, cost: Int, productIds: [ID!]): Transaction
         deleteProduct(id: String): Product
         deleteTransaction(id: String): Transaction
         deleteUser(id: String): User

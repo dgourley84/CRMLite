@@ -1,158 +1,66 @@
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import Header from "components/Header";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetTransactionsQuery } from "state/api";
+import { gql, useQuery, ApolloClient } from '@apollo/client';
+import Product from '../../components/Product.js'
+import Transaction from "components/transaction.jsx";
+
+export const TRANSACTION_QUERY = gql`
+query GetAllTransactions {
+    getAllTransactions {
+      id
+      userId
+      cost
+      products {
+        name
+        price
+        id
+      }
+    }
+  }
+`
+
+
 
 const Transactions = () => {
-	const theme = useTheme();
-	localStorage.removeItem("TransactionID");
-	const navigate = useNavigate();
+	const { data, loading, error } = useQuery(TRANSACTION_QUERY, {
+        partialRefetch: [
+            {query: TRANSACTION_QUERY}
+        ]
+    });
+    const isNonMobile = useMediaQuery("(min-width:1000px)");
+    if (error) {
+        console.error('TRANSACTION_QUERY error', error);
+    }
 
-	// values to be sent to the backend
-	const [page, setPage] = useState(0);
-	const [pageSize, setPageSize] = useState(20);
-	const [sort, setSort] = useState({});
-	const [search, setSearch] = useState("");
+    return (
 
-	const [searchInput, setSearchInput] = useState("");
-	const { data, isLoading } = useGetTransactionsQuery({
-		page,
-		pageSize,
-		sort: JSON.stringify(sort),
-		search,
-	});
-	console.log("Transactions", data);
-
-	const columns = [
-		{
-			field: "_id",
-			headerName: "ID",
-			flex: 1,
-		},
-		{
-			field: "userId",
-			headerName: "User ID",
-			flex: 1,
-		},
-		{
-			field: "createdAt",
-			headerName: "CreatedAt",
-			flex: 1,
-			renderCell: (params) => new Date(params.value).toLocaleString(),
-		},
-		{
-			field: "products",
-			headerName: "# of Products",
-			flex: 0.5,
-			sortable: false,
-			renderCell: (params) => params.value.length,
-		},
-		{
-			field: "cost",
-			headerName: "Cost",
-			flex: 0.8,
-			renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-		},
-		{
-			field: "update",
-			headerName: "Update",
-			flex: 0.5,
-			renderCell: (row) => {
-				return (
-					<Button
-						variant="contained"
-						size="small"
-						color="primary"
-						onClick={() => {
-							localStorage.setItem("TransactionID", row.id);
-							navigate(`/transactions/update/${row.id}`);
-						}}
-					>
-						Update
-					</Button>
-				);
-			},
-			disableClick: true,
-		},
-		{
-			field: "delete",
-			headerName: "Delete",
-			flex: 0.5,
-			renderCell: (row) => {
-				return (
-					<Button
-						variant="contained"
-						size="small"
-						color="secondary"
-						onClick={() => {
-							localStorage.setItem("TransactionID", row._id);
-							navigate(`/transactions/update/${row._id}`);
-						}}
-					>
-						Delete
-					</Button>
-				);
-			},
-			disableClick: true,
-		},
-	];
-
-	return (
-		<Box m="1.5rem 2.5rem">
-			<Header title="TRANSACTIONS" subtitle="Entire list of transactions" />
-			<Box
-				height="80vh"
-				sx={{
-					"& .MuiDataGrid-root": {
-						border: "none",
-					},
-					"& .MuiDataGrid-cell": {
-						borderBottom: "none",
-					},
-					"& .MuiDataGrid-columnHeaders": {
-						backgroundColor: theme.palette.background.alt,
-						color: theme.palette.secondary[100],
-						borderBottom: "none",
-					},
-					"& .MuiDataGrid-virtualScroller": {
-						backgroundColor: theme.palette.primary.light,
-					},
-					"& .MuiDataGrid-footerContainer": {
-						backgroundColor: theme.palette.background.alt,
-						color: theme.palette.secondary[100],
-						borderTop: "none",
-					},
-					"& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-						color: `${theme.palette.secondary[200]} !important`,
-					},
-				}}
-			>
-				<DataGrid
-					loading={isLoading || !data}
-					getRowId={(row) => row._id}
-					rows={(data && data.transactions) || []}
-					columns={columns}
-					rowCount={(data && data.total) || 0}
-					rowsPerPageOptions={[20, 50, 100]}
-					pagination
-					page={page}
-					pageSize={pageSize}
-					paginationMode="server"
-					sortingMode="server"
-					onPageChange={(newPage) => setPage(newPage)}
-					onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-					onSortModelChange={(newSortModel) => setSort(...newSortModel)}
-					components={{ Toolbar: DataGridCustomToolbar }}
-					componentsProps={{
-						toolbar: { searchInput, setSearchInput, setSearch },
-					}}
-				/>
-			</Box>
-		</Box>
-	);
-};
+                
+                <Box m="1.5rem 2.5rem">
+       <Header title="TRANSACTIONS" subtitle="See your list of transactions"/>
+            <Box 
+                mt="20px" 
+                display="grid" 
+                gridTemplateColumns="repeat(4, minmax( 0, 1fr))"
+                justifyContent="space-between"
+                rowGap="20px"
+                columnGap="1.33%"
+                sx ={{
+                    "& > div": {gridColumn : isNonMobile ? undefined : "span 4"}
+                }}
+            >
+                {loading && <tr><td>Loading...</td></tr>}
+                {error && <tr><td>Check console log for error</td></tr>}
+             {!loading && !error && data?.getAllTransactions.map(transaction => <Transaction transaction={transaction} key={transaction.id}/>)}
+              
+            </Box> 
+         
+    </Box>
+    )
+			}
 
 export default Transactions;
