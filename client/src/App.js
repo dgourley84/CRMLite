@@ -20,14 +20,25 @@ import Products from "scenes/products";
 import UpdateProduct from "scenes/productUpdate";
 import UpdateUser from "scenes/profile";
 import AddUser from "scenes/profileAdd";
+
+import DeleteProduct from "scenes/deleteProduct";
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import Register from "scenes/register";
 import Transactions from "scenes/transactions";
 import { themeSettings } from "theme";
 
 
 
+
 //auth middleware
 // import { AuthorizeUser } from "middleware/auth";
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+  cache: new InMemoryCache()
+})
+
+
 
 
 function App() {
@@ -35,6 +46,7 @@ function App() {
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
     <div className="app">
+      <ApolloProvider client={client}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -59,10 +71,13 @@ function App() {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/performance" element={<Performance />} />
+              <Route path="/deleteproduct" element={<DeleteProduct />} />
             </Route>
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
+      </ApolloProvider>
+
     </div>
   );
 }

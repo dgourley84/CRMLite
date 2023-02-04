@@ -11,6 +11,9 @@ import {
   Input,
   FormHelperText,
 } from "@mui/material";
+import { gql, useMutation } from '@apollo/client';
+import { PRODUCT_QUERY } from 'scenes/products';
+import { useNavigate } from 'react-router-dom';
 import Header from "components/Header";
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
@@ -18,52 +21,67 @@ import { profileValidation } from 'helpers/validate';
 import convertToBase64 from 'helpers/convert';
 import useFetch from 'hooks/fetch.hook';
 import { updateUser } from 'helpers/helper';
-import { useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/profile.jpg';
 import styles from '../../assets/Profile.module.css';
 import extend from '../../assets/Username.module.css'
 import { useAuthStore } from 'store/store';
+import Product from '../../components/Product.js';
 
-export default function UpdateProduct() {
 
-  const [file, setFile] = useState();
-  const navigate = useNavigate()
-  const [{ isLoading, apiData, serverError }] = useFetch();
- 
-  const formikProduct = useFormik({
-    initialValues : {
-      name : apiData?.name || '',
-      price: apiData?.price || '',
-      description: apiData?.description || '',
-      category : apiData?.category || '',
-      rating : apiData?.rating || '',
-      supply : apiData?.supply || '',
-    },
-    enableReinitialize: true,
-    validate : profileValidation,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit : async values => {
-      values = await Object.assign(values, { profile : file || apiData?.profile || ''})
-      let updatePromise = updateUser(values);
 
-      toast.promise(updatePromise, {
-        loading: 'Updating...',
-        success : <b>Update Successfully...!</b>,
-        error: <b>Could not Update!</b>
-      });
 
-    }
-  })
 
+export default function UpdateProduct({product}) {
+//const productID = Product.product.id
+
+  const navigate = useNavigate();
+  function navigateBack() {
+    navigate('/products')
+  } 
   const theme = useTheme();
-
-  // logout handler function
-
-  if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
-  if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
-
+  const productID = localStorage.getItem('ID');
+  let UP = localStorage.getItem('Items');
+  UP = JSON.parse(UP);
+  console.log(UP)
+  // let updatedProducts = localStorage.getItem('Items')
+  // updatedProducts = JSON.parse(updatedProducts);
+  const [ updateMutation ] = useMutation(UPDATE_PRODUCT_MUTATION, {
+    refetchQueries: [
+      {query: PRODUCT_QUERY}
+    ]
+  });
+  const [ name, setName ] = useState(UP[0]);
+  const [ price, setPrice ] = useState(UP[1]);
+  const [ description, setDescription ] = useState(UP[2]);
+  const [ category, setCategory ] = useState(UP[3]);
+  const [ rating, setRating ] = useState(UP[4]);
+  const [ supply, setSupply ] = useState(UP[5]);
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    console.info('UPDATED PRODUCT', name)
+    updateMutation({
+      variables: {
+        id: productID,
+        name: name,
+        price: +price,
+        description: description,
+        category: category,
+        rating: +rating,
+        supply: +supply
+      }
+    }).then(() => {
+      navigateBack()
+    })
+    setName('');
+    setPrice('');
+    setDescription('');
+    setCategory('');
+    setRating('');
+    setSupply('');
+  
+  }
   return (
+    <form onSubmit={evt => handleSubmit(evt)}>
     <Container component="main" maxWidth="md">   
       <Box
           sx={{
@@ -79,40 +97,64 @@ export default function UpdateProduct() {
         </Typography>
         <Box component="form" noValidate sx={{mt:3}} gap="10">
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Product name</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProduct.getFieldProps('name')} />
+            <InputLabel htmlFor="my-input">Product Name</InputLabel>
+            <Input id="my-input" aria-describedby="my-helper-text" type="text" value={name} onChange={evt => setName(evt.target.value)} />
             <FormHelperText id="my-helper-text">Update product name</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Price</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProduct.getFieldProps('email')} />
+            <InputLabel htmlFor="my-input">Product Price</InputLabel>
+            <Input id="my-input" aria-describedby="my-helper-text" type="number" value={price} onChange={evt => setPrice(evt.target.value)} />
             <FormHelperText id="my-helper-text">Update product price</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Description</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProduct.getFieldProps('phoneNumber')} />
+            <InputLabel htmlFor="my-input">Product Description</InputLabel>
+            <Input id="my-input" aria-describedby="my-helper-text" type="text" value={description} onChange={evt => setDescription(evt.target.value)} />
             <FormHelperText id="my-helper-text">Update product description</FormHelperText>
           </FormControl>
           <FormControl sx={{mb: 2, mr:1}}>
-            <InputLabel htmlFor="my-input">Category</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProduct.getFieldProps('country')} />
+            <InputLabel htmlFor="my-input">Product Category</InputLabel>
+            <Input id="my-input" aria-describedby="my-helper-text" type="text" value={category} onChange={evt => setCategory(evt.target.value)} />
             <FormHelperText id="my-helper-text">Update product category</FormHelperText>
           </FormControl>
-          <FormControl sx={{mb: 2}}>
-            <InputLabel htmlFor="my-input">Rating</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" {...formikProduct.getFieldProps('city')} />
+          <FormControl sx={{mb: 2, mr:1}}>
+            <InputLabel htmlFor="my-input">Product Rating</InputLabel>
+            <Input id="my-input" aria-describedby="my-helper-text" type="number" value={rating} onChange={evt => setRating(evt.target.value)} />
             <FormHelperText id="my-helper-text">Update product rating</FormHelperText>
+          </FormControl>
+          <FormControl sx={{mb: 2, mr:1}}>
+            <InputLabel htmlFor="my-input">Product Supply</InputLabel>
+            <Input id="my-input" aria-describedby="my-helper-text" type="number" value={supply} onChange={evt => setSupply(evt.target.value)} />
+            <FormHelperText id="my-helper-text">Update product supply</FormHelperText>
           </FormControl>
         </Box>
       </Box>
       <Box sx={{mt: 2, display: 'flex', justifyContent: 'flex-end'}}>
-        <Button variant="contained" color="primary" type="submit" disabled={!formikProduct.isValid || formikProduct.isSubmitting} sx={{mb: 2}}>
+        <Button variant="contained" color="primary" type="submit"   sx={{mb: 2}}>
           Update Product
         </Button>
-        <Button variant="contained" color="secondary" onClick={formikProduct.handleReset} sx={{mb: 2,ml:2}}>
+        <Button variant="contained" color="secondary"  sx={{mb: 2,ml:2}}>
           Clear Form
         </Button>
+       
       </Box>
     </Container>
+
+
+    </form>
+
   )
+};
+
+const UPDATE_PRODUCT_MUTATION = gql`
+mutation Mutation($id: ID!, $name: String, $price: Int, $description: String, $category: String, $rating: Int, $supply: Int) {
+  updateProduct(id: $id, name: $name, price: $price, description: $description, category: $category, rating: $rating, supply: $supply) {
+    id
+    name
+    price
+    description
+    category
+    rating
+    supply
+  }
 }
+`

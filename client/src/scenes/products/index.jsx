@@ -1,4 +1,4 @@
-
+import Product from '../../components/Product.js'
 import React, { useState } from "react";
 import {
   Box,
@@ -16,96 +16,39 @@ import Header from "components/Header";
 import { useGetProductsQuery } from "state/api";
 import { useNavigate } from 'react-router-dom';
 
-//product component
-const Product = ({
-    _id,
-    name,
-    description,
-    price,
-    rating,
-    category,
-    supply,
-    stat,
-}) => {
-    const theme = useTheme();
-    const [isExpanded, setIsExpanded] = useState(false);
-     const navigate = useNavigate()
 
-    // Navigate to update user page
-      function productUpdate(){
-        navigate('/updateproduct')
+import { gql, useQuery, ApolloClient } from '@apollo/client';
+
+export const PRODUCT_QUERY = gql`
+    query Query {
+        getAllProducts {
+        id
+        name
+        price
+        description
+        category
+        supply
+        rating
+        }
+    }
+`
+
+export default function Products() {
+    const { data, loading, error } = useQuery(PRODUCT_QUERY, {
+        partialRefetch: [
+            {query: PRODUCT_QUERY}
+        ]
+    });
+    const isNonMobile = useMediaQuery("(min-width:1000px)");
+    if (error) {
+        console.error('PRODUCTS_QUERY error', error);
     }
 
     return (
-        <Card
-          sx={{
-            backgroundImage: "none",
-            backgroundColor: theme.palette.background.alt, //setting background to be flipped based on dark mode
-            borderRadius: "0.55rem",
-          }}
-        >
-            <CardContent>
-                <Typography sx={{fontSize:14}} color = {theme.palette.secondary[700]} gutterBottom>
-                    {category}
-                </Typography>
-                <Typography variant="h5" component="div">
-                    {name}
-                </Typography>
-                <Typography sx={{mb:"1.5rem"}} color = {theme.palette.secondary[400]}>
-                    ${Number(price).toFixed(2)}
-                </Typography>
-                <Rating value={rating} readOnly/>
 
-                <Typography variant="body2">
-                    {description}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button 
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={()=> productUpdate()}
-                >
-                    Update Product
-                </Button>
-                <Button 
-                variant="contained"
-                color="secondary"
-                size="small"
-                onClick={()=> setIsExpanded(!isExpanded)}
-                >
-                    See More
-                </Button>
-            </CardActions>
-            <Collapse
-                in = {isExpanded}
-                timeout ="auto"
-                unmountOnExit
-                sx={{
-                    color: theme.palette.neutral[300]
-                }}
-            >
-                <CardContent>
-                    <Typography>id: {_id}</Typography>
-                    <Typography>Supply Left: {supply}</Typography>
-                    <Typography>Yearly Sales This Year: {stat.yearlySalesTotal}</Typography>
-                    <Typography>Yearly Units Sold This Year: {stat.yearlyTotalSoldUnits}</Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
-    )
-}
-
-
-const Products = () => {
-    const { data , isLoading } = useGetProductsQuery();
-    const isNonMobile = useMediaQuery("(min-width:1000px)");
-    console.log("Products",data)
-  return (
-    <Box m="1.5rem 2.5rem">
-        <Header title="PRODUCTS" subtitle="See your list of products"/>
-        {data || !isLoading ? (
+                
+                <Box m="1.5rem 2.5rem">
+       <Header title="PRODUCTS" subtitle="See your list of products"/>
             <Box 
                 mt="20px" 
                 display="grid" 
@@ -117,36 +60,15 @@ const Products = () => {
                     "& > div": {gridColumn : isNonMobile ? undefined : "span 4"}
                 }}
             >
-             {data.map(
-                ({
-                    _id,
-                    name,
-                    description,
-                    price,
-                    rating,
-                    category,
-                    supply,
-                    stat, 
-                }) => (
-                <Product
-                    key ={_id}
-                    _id = {_id}
-                    name ={name}
-                    description = {description}
-                    price ={price}
-                    rating ={rating}
-                    category ={category}
-                    supply = {supply}
-                    stat = {stat}
-                />
-                )
-             )}   
+                {loading && <tr><td>Loading...</td></tr>}
+                {error && <tr><td>Check console log for error</td></tr>}
+             {!loading && !error && data?.getAllProducts.map(product => <Product product={product} key={product.id}/>)}
+              
             </Box> 
-            ) : (
-                <>Loading...</>
-        )}
+         
     </Box>
-  )
+    )
+       
+    
+        
 }
-
-export default Products

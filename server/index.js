@@ -13,6 +13,14 @@ import loginRoutes from "./routes/login.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 
+//const { ApolloServer, gql} = require('apollo-server-express');
+import { ApolloServer, gql } from 'apollo-server-express';
+//import { typeDefs, resolvers } from './schemas'
+
+import typeDefs from './schemas/typeDefs.js';
+import resolvers from './schemas/resolver.js';
+
+
 
 
 //data imports
@@ -23,11 +31,38 @@ import {
 } from "./data/index.js";
 import AffiliateStat from "./models/AffiliateStat.js";
 import OverallStat from "./models/OverallStat.js";
-import Product from "./models/Product.js";
+//import Product from "./models/Product.js";
 import ProductStat from "./models/ProductStat.js";
-import Transaction from "./models/Transaction.js";
+//import Transaction from "./models/Transaction.js";
 import User from "./models/User.js";
 
+async function startServer() {
+    const app = express();
+    const apolloServer = new ApolloServer({
+        typeDefs,
+        resolvers,
+    });
+
+    await apolloServer.start()
+
+    apolloServer.applyMiddleware({app: app});
+
+    app.use((req, res) => {
+        res.send('Hello from express apollo server');
+        // res.header('Access-Control-Allow-Origin', '*');
+        // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    })
+
+    await mongoose.connect('mongodb+srv://dallasg:C2b39j5k1@cluster0.emfcrmm.mongodb.net/?retryWrites=true&w=majority', {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    });
+    console.log('Mongoose connected...');
+    
+    app.listen(4000, () => console.log("Server running on port 4000"));
+}
+
+startServer();
 
 
 // Configuration and middlewares
