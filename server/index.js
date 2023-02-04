@@ -81,6 +81,7 @@ mongoose
 
     }).catch((error) => console.log(`${error} did not connect`))
 
+const apolloPort = process.env.APOLLO_PORT || 4000;
 async function startServer() {
     const app = express();
     const apolloServer = new ApolloServer({
@@ -104,7 +105,7 @@ async function startServer() {
     });
     console.log('Mongoose connected...');
 
-    app.listen(4000, () => console.log("Server running on port 4000"));
+    app.listen(apolloPort, () => console.log("Server running on port 4000"));
 }
 
 startServer();
