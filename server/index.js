@@ -96,7 +96,7 @@ async function startServer() {
         res.send('Hello from express apollo server');
     })
 
-    await mongoose.connect(process.env.MONGO_URL, {
+    await mongoose.connect('mongodb+srv://dallasg:C2b39j5k1@cluster0.emfcrmm.mongodb.net/?retryWrites=true&w=majority', {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     });

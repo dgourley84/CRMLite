@@ -1,10 +1,16 @@
 //const mongoose = require('mongoose');
 import mongoose, { Schema } from 'mongoose';
 import Product from './Product.js'
+//import User from './User.js'
 
 const TransactionSchema = new mongoose.Schema(
     {
-      userId: String,
+      userId: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'user'
+        },
+      ],
       cost: Number,
       products: [
         {

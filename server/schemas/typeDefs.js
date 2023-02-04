@@ -9,7 +9,7 @@ const typeDefs = gql`
     }
     type Transaction {
         id: ID
-        userId: ID
+        userId: [User]
         cost: String
         products: [Product]
     }
@@ -32,7 +32,7 @@ const typeDefs = gql`
     type Mutation {
         createUser(name: String!, email: String!, password: String!, city: String, state: String, country: String, company: String, phoneNumber: String): User
         createProduct(name: String, price: Int, description: String, category: String, rating: Int, supply: Int): Product
-        createTransaction(userId: String, cost: Int, productIds: [ID!]): Transaction
+        createTransaction(userIds: [ID!], cost: Int, productIds: [ID!]): Transaction
         deleteProduct(id: String): Product
         deleteTransaction(id: String): Transaction
         deleteUser(id: String): User

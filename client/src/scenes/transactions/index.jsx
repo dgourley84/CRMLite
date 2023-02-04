@@ -10,18 +10,19 @@ import Product from '../../components/Product.js'
 import Transaction from "components/transaction.jsx";
 
 export const TRANSACTION_QUERY = gql`
-query GetAllTransactions {
-    getAllTransactions {
-      id
-      userId
-      cost
-      products {
-        name
-        price
-        id
-      }
+query Query {
+  getAllTransactions {
+    id
+    userId {
+      name
+    }
+    cost
+    products {
+      name
+      price
     }
   }
+}
 `
 
 
@@ -32,6 +33,7 @@ const Transactions = () => {
             {query: TRANSACTION_QUERY}
         ]
     });
+    console.log(data)
     const isNonMobile = useMediaQuery("(min-width:1000px)");
     if (error) {
         console.error('TRANSACTION_QUERY error', error);

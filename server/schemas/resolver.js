@@ -10,7 +10,7 @@ const resolvers = {
             return await User.find();
         },
         getAllTransactions: async () => {
-            return await Transaction.find().populate('products');
+            return await Transaction.find().populate('products').populate('userId');
         },
         getAllProducts: async () => {
             return await Product.find();
@@ -72,9 +72,10 @@ const resolvers = {
             return null;
         },
         createTransaction: async (parent, args) => {
-            const { userId, cost, productIds } = args
+            const { userIds, cost, productIds } = args
             const products = await Product.find({ _id: { $in: productIds }})
-            const transaction = await Transaction.create({ userId, cost, products })
+            const users = await User.find({ _id: {$in: userIds}})
+            const transaction = await Transaction.create({ userId: users, cost, products })
             return transaction;
         },
         deleteTransaction: async (parent, args) => {

@@ -14,18 +14,14 @@ import {
 
   import React, { useState } from "react";
   import { useNavigate } from 'react-router-dom';
-  import Name from './name.jsx'
+
 
   export default function Transaction({transaction}) {
-     const {id, userId, cost, products} = transaction
-    // const  [{data}, getNameQuery]  = useQuery(TRANSACTION_NAME_QUERY)
-    // getNameQuery({
-    //     variables: {
-    //         id: userId
-    //     }
-    // })
+    const { id, userId, cost, products} = transaction
+    //const customerName = userId[0].name
     const [isExpanded, setIsExpanded] = useState(false);
     const theme = useTheme();
+    console.log(userId)
     return (
         <Card
         sx={{
@@ -39,7 +35,9 @@ import {
                   
               </Typography>
               <Typography variant="h5" component="div">
-                 Customer: {/* {JSON.stringify(data?.getOneUser[1])} */}
+                 Customer: {userId.map(name => (
+                    name.name
+                 ))}
               </Typography>
               <Typography sx={{mb:"1.5rem"}} color = {theme.palette.secondary[400]}>
               Cost: ${Number(cost).toFixed(2)}
@@ -53,7 +51,7 @@ import {
               size="small"
                
               >
-                  Update Transaction: {id}
+                  Update Transaction
               </Button>
               
               <Button 
@@ -102,11 +100,6 @@ import {
     
   }
 
-//   const TRANSACTION_NAME_QUERY = gql`
-//   query GetOneUser($id: ID!) {
-//     getOneUser(id: $id) {
-//       name
-//       id
-//     }
-//   }
-//   `
+
+
+
