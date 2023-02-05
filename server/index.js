@@ -20,18 +20,18 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import resolvers from './schemas/resolver.js';
 import typeDefs from './schemas/typeDefs.js';
 
-//data imports
-import {
-    dataAffiliateStat, dataOverallStat, dataProduct,
-    dataProductStat,
-    dataTransaction, dataUser
-} from "./data/index.js";
-import AffiliateStat from "./models/AffiliateStat.js";
-import OverallStat from "./models/OverallStat.js";
-//import Product from "./models/Product.js";
-import ProductStat from "./models/ProductStat.js";
-//import Transaction from "./models/Transaction.js";
-import User from "./models/User.js";
+// //data imports
+// import {
+//     dataAffiliateStat, dataOverallStat, dataProduct,
+//     dataProductStat,
+//     dataTransaction, dataUser
+// } from "./data/index.js";
+// import AffiliateStat from "./models/AffiliateStat.js";
+// import OverallStat from "./models/OverallStat.js";
+// //import Product from "./models/Product.js";
+// import ProductStat from "./models/ProductStat.js";
+// //import Transaction from "./models/Transaction.js";
+// import User from "./models/User.js";
 
 
 
@@ -61,28 +61,8 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use("/home", loginRoutes);
 
-// Mongoose Setup
-const PORT = process.env.PORT || 9000;
 
-mongoose
-    .connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }).then(() => {
-        app.listen(PORT, () => console.log(`Server Port: ${PORT}`))
-
-        /* ONLY ADD THIS DATA ONCE */
-        //if this is done a second time - navigate to atlas db delete the user document and then redo.
-        // User.insertMany(dataUser);
-        // Product.insertMany(dataProduct);
-        // ProductStat.insertMany(dataProductStat);
-        // Transaction.insertMany(dataTransaction);
-        // OverallStat.insertMany(dataOverallStat);
-        // AffiliateStat.insertMany(dataAffiliateStat);
-
-    }).catch((error) => console.log(`${error} did not connect`))
-
-const apolloPort = process.env.APOLLO_PORT || 4000;
+const apolloPort = process.env.PORT || 4000;
 async function startServer() {
     const apolloServer = new ApolloServer({
         typeDefs,
