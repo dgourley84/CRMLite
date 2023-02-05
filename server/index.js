@@ -33,9 +33,6 @@ import typeDefs from './schemas/typeDefs.js';
 // //import Transaction from "./models/Transaction.js";
 // import User from "./models/User.js";
 
-
-
-
 // Configuration and middlewares
 dotenv.config();
 const app = express();
@@ -73,9 +70,9 @@ async function startServer() {
 
     apolloServer.applyMiddleware({ app: app });
 
-    app.use((req, res) => {
+    app.get('/', (req, res) => {
         res.send('GraphQL up and running');
-    })
+    });
 
     await mongoose.connect(process.env.MONGO_URL, {
         useUnifiedTopology: true,
