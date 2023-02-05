@@ -8,12 +8,12 @@ import { useGetCustomersQuery } from "state/api";
 const Customers = () => {
 	//protection on page navigation for only logged in Admins
 	const navigate = useNavigate();
-	const token = localStorage.getItem("token");
-	React.useEffect(() => {
-		if (!token) {
-			navigate("/login");
-		}
-	}, [token]);
+	//const token = localStorage.getItem("token");
+	//React.useEffect(() => {
+		//if (!token) {
+		//	navigate("/login");
+		//}
+	//}, [token]);
 	const theme = useTheme();
 	const { data, isLoading } = useGetCustomersQuery();
 	console.log("Customers", data);

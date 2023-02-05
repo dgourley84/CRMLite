@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Container,
@@ -16,19 +16,54 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
 
 export default function ProductForm() {
-  const [products, setProducts] = useState([    { id: 1, name: 'Product 1' },    { id: 2, name: 'Product 2' },    { id: 3, name: 'Product 3' },  ]);
+  
+  //const [products, setProducts] = useState([data]);
+  const { data } = useQuery(PRODUCT_QUERY);
+  const products = data ? data.getAllProducts : [];
   const [selectedProducts, setSelectedProducts] = useState(['']);
   const [productQuantities, setProductQuantities] = useState(['']);
   const [numOfProducts, setNumOfProducts] = useState(1);
   const theme = useTheme();
-
+  
+  
+  console.log(products);
+  let saveProduct = 'saveToLocalStorage';
   const addProduct = () => {
     setSelectedProducts([...selectedProducts, '']);
     setProductQuantities([...productQuantities, '']);
     setNumOfProducts(numOfProducts + 1);
   };
+
+  function saveItems() {
+    localStorage.setItem('savedItems', JSON.stringify(selectedProducts));
+    localStorage.setItem('savedQuantity', JSON.stringify(productQuantities));
+  }
+
+  // const [items, setItems] = useState([]);
+
+  // useEffect(() => {
+  //   localStorage.setItem('items', JSON.stringify(items));
+  //   }, [items]);
+
+  // useEffect(() => {
+  //   setItems(JSON.parse(localStorage.getItem('items')) || []);
+  //   }, []);
+
+  // const handleSubmit = () => {
+  //   const newItems = [
+  //   ...items,
+  // {
+  // selectedProducts,
+  // productQuantities
+  // }
+  // ];
+  // setItems(newItems);
+  // localStorage.setItem('items', JSON.stringify(newItems));
+  // };
 
   return (
     <Container component="main" maxWidth="md">   
@@ -60,10 +95,10 @@ export default function ProductForm() {
                   variant="standard"
                 >
                   {products.map((product) => (
-                    <MenuItem key={product.id} value={product.name}>
-                      {product.name}
+                    <MenuItem key={product.id} value={product}>
+                      {product.name} ({product.price})
                     </MenuItem>
-                  ))}
+))}
                 </Select>
               </Grid>
               <Grid item xs={12}>
@@ -85,8 +120,20 @@ export default function ProductForm() {
                   <Button variant="contained" color="primary" onClick={addProduct}>
                   Add another product
                   </Button>
+                  <Button variant="contained" color="primary" onClick={()=>saveItems()}>
+                  Save
+                  </Button>
                   </Box>
                   </Box>
                   </Container>
                   );
                   }
+                  const PRODUCT_QUERY = gql`
+                    query Query {
+                        getAllProducts {
+                            id
+                            name
+                            price
+                        }
+                    }
+                `;

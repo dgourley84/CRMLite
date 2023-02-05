@@ -29,11 +29,11 @@ const Transactions = () => {
 	//protection on page navigation for only logged in Admins
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-	React.useEffect(() => {
-		if (!token) {
-			navigate("/login");
-		}
-	}, [token]);
+	//React.useEffect(() => {
+		//if (!token) {
+		//	navigate("/login");
+		//}
+	//}, [token]);
 
 	const { data, loading, error } = useQuery(TRANSACTION_QUERY, {
 		partialRefetch: [{ query: TRANSACTION_QUERY }],
