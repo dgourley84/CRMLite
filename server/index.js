@@ -63,6 +63,7 @@ app.use("/home", loginRoutes);
 
 // Mongoose Setup
 const PORT = process.env.PORT || 9000;
+
 mongoose
     .connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
@@ -96,7 +97,7 @@ async function startServer() {
         res.send('Hello from express apollo server');
     })
 
-    await mongoose.connect('mongodb+srv://dallasg:C2b39j5k1@cluster0.emfcrmm.mongodb.net/?retryWrites=true&w=majority', {
+    await mongoose.connect(process.env.MONGO_URL, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     });

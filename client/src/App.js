@@ -28,7 +28,7 @@ import Transactions from "scenes/transactions";
 import { themeSettings } from "theme";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql',
   cache: new InMemoryCache()
 })
 
