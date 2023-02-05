@@ -38,6 +38,7 @@ export async function verifyUser(req, res, next) {
  */
 export async function register(req, res) {
     try {
+
         const { email, password, name } = req.body;
 
         //check the existing user

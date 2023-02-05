@@ -1,4 +1,4 @@
-import { restElement } from "@babel/types";
+//import { restElement } from "@babel/types";
 import {
 	Box,
 	Button,
@@ -11,9 +11,10 @@ import {
 	useTheme,
 } from "@mui/material";
 import axios from "axios";
-import Header from "components/Header";
+//import Header from "components/Header";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateProfile() {
 	const [name, setName] = useState("");
@@ -61,6 +62,13 @@ export default function UpdateProfile() {
 	};
 
 	const theme = useTheme();
+
+	//protection on page navigation for only logged in Admins
+	const navigate = useNavigate();
+	const token = localStorage.getItem("token");
+	if (!token) {
+		navigate("/login");
+	}
 
 	return (
 		<form onSubmit={(evt) => handleSubmit(evt)}>

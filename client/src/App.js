@@ -27,19 +27,10 @@ import Register from "scenes/register";
 import Transactions from "scenes/transactions";
 import { themeSettings } from "theme";
 
-
-
-
-//auth middleware
-// import { AuthorizeUser } from "middleware/auth";
-
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache()
 })
-
-
-
 
 function App() {
   const mode = useSelector((state) => state.global.mode);

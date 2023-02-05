@@ -45,22 +45,42 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
 
 	// Navigate to update user page
 	function userUpdate() {
-		navigate("/profile");
+		const token = localStorage.getItem("token");
+		if (token) {
+			navigate("/profile");
+		} else {
+			navigate("/login");
+		}
 	}
 
 	// Navigate to add a user page
 	function userAdd() {
-		navigate("/adduser");
+		const token = localStorage.getItem("token");
+		if (token) {
+			navigate("/adduser");
+		} else {
+			navigate("/login");
+		}
 	}
 
 	// Navigate to add a user page
 	function adminAdd() {
-		navigate("/register");
+		const token = localStorage.getItem("token");
+		if (token) {
+			navigate("/register");
+		} else {
+			navigate("/login");
+		}
 	}
 
 	// Navigate to update product page
 	function addProduct() {
-		navigate("/addproduct");
+		const token = localStorage.getItem("token");
+		if (token) {
+			navigate("/addproduct");
+		} else {
+			navigate("/login");
+		}
 	}
 
 	const [userData, setUserData] = useState({});
@@ -89,8 +109,12 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
 				}
 			}
 		};
+		const handleClick = () => {
+			fetchUserData();
+		};
 
-		fetchUserData();
+		window.addEventListener("click", handleClick);
+		return () => window.removeEventListener("click", handleClick);
 	}, []);
 
 	return (
