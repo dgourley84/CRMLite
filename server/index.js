@@ -74,7 +74,7 @@ async function startServer() {
     apolloServer.applyMiddleware({ app: app });
 
     app.use((req, res) => {
-        res.send('Hello from express apollo server');
+        res.send('GraphQL up and running');
     })
 
     await mongoose.connect(process.env.MONGO_URL, {
@@ -83,7 +83,7 @@ async function startServer() {
     });
     console.log('Mongoose connected...');
 
-    app.listen(apolloPort, () => console.log(`Apollo Server Port: ${apolloPort}`));
+    app.listen(apolloPort, () => console.log(`Server Active on Port: ${apolloPort}`));
 }
 
 startServer();
