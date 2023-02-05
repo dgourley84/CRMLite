@@ -44,10 +44,11 @@ export default function Products() {
 	//protection on page navigation for only logged in Admins
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-	if (!token) {
-		navigate("/login");
-	}
-
+	React.useEffect(() => {
+		if (!token) {
+			navigate("/login");
+		}
+	}, [token]);
 	return (
 		<Box m="1.5rem 2.5rem">
 			<Header title="PRODUCTS" subtitle="See your list of products" />
