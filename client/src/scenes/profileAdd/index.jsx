@@ -172,7 +172,7 @@ export default function AddUser() {
 						type="submit"
 						sx={{ mb: 2 }}
 					>
-						Create User
+						Create Admin
 					</Button>
 					<Button variant="contained" color="secondary" sx={{ mb: 2, ml: 2 }}>
 						Reset

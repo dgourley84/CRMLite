@@ -163,11 +163,11 @@ export default function UpdateProfile() {
 						type="submit"
 						sx={{ mb: 2 }}
 					>
-						Create User
+						Update admin
 					</Button>
-					<Button variant="contained" color="secondary" sx={{ mb: 2, ml: 2 }}>
+					{/* <Button variant="contained" color="secondary" sx={{ mb: 2, ml: 2 }}>
 						Reset
-					</Button>
+					</Button> */}
 				</Box>
 			</Container>
 		</form>
