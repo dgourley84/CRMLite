@@ -19,16 +19,15 @@ export default function Transaction({ transaction }) {
 	//protection on page navigation for only logged in Admins
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-	React.useEffect(() => {
-		if (!token) {
-			navigate("/login");
-		}
-	}, [token]);
+	// React.useEffect(() => {
+	// 	if (!token) {
+	// 		navigate("/login");
+	// 	}
+	// }, [token]);
 	const { id, userId, cost, products } = transaction;
 	//const customerName = userId[0].name
 	const [isExpanded, setIsExpanded] = useState(false);
 	const theme = useTheme();
-	console.log(userId);
 	return (
 		<Card
 			sx={{
