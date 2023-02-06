@@ -29,15 +29,26 @@ const Transactions = () => {
 	//protection on page navigation for only logged in Admins
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-	//React.useEffect(() => {
-		//if (!token) {
-		//	navigate("/login");
-		//}
-	//}, [token]);
+	React.useEffect(() => {
+		if (!token) {
+			navigate("/login");
+		}
+	}, [token]);
 
-	const { data, loading, error } = useQuery(TRANSACTION_QUERY, {
+	const { data, loading, error, refetch } = useQuery(TRANSACTION_QUERY, {
 		partialRefetch: [{ query: TRANSACTION_QUERY }],
 	});
+
+	React.useEffect(() => {
+		const handleRefresh = () => {
+			refetch();
+		};
+		window.addEventListener("click", handleRefresh);
+		return () => {
+			window.removeEventListener("click", handleRefresh);
+		};
+	}, [refetch]);
+
 	console.log(data);
 	const isNonMobile = useMediaQuery("(min-width:1000px)");
 	if (error) {
