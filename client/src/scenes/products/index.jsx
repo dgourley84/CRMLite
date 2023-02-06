@@ -33,7 +33,7 @@ export const PRODUCT_QUERY = gql`
 `;
 
 export default function Products() {
-	const { data, loading, error } = useQuery(PRODUCT_QUERY, {
+	const { data, loading, error, refetch } = useQuery(PRODUCT_QUERY, {
 		partialRefetch: [{ query: PRODUCT_QUERY }],
 	});
 	const isNonMobile = useMediaQuery("(min-width:1000px)");
@@ -44,11 +44,17 @@ export default function Products() {
 	//protection on page navigation for only logged in Admins
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-	//React.useEffect(() => {
-		//if (!token) {
-		//	navigate("/login");
-		//}
-	//}, [token]);
+	React.useEffect(() => {
+		if (!token) {
+			navigate("/login");
+		}
+	}, [token]);
+
+	React.useEffect(() => {
+		window.addEventListener("click", refetch);
+		return () => window.removeEventListener("click", refetch);
+	}, [refetch]);
+
 	return (
 		<Box m="1.5rem 2.5rem">
 			<Header title="PRODUCTS" subtitle="See your list of products" />
